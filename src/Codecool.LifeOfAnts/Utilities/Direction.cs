@@ -1,4 +1,4 @@
-﻿namespace Codecool.LifeOfAnts
+﻿namespace Codecool.LifeOfAnts.Utilities
 {
     /// <summary>
     ///     Direction enum
