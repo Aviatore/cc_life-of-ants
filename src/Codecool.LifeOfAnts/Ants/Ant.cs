@@ -1,3 +1,5 @@
+using System;
+
 namespace Codecool.LifeOfAnts.Ants
 {
     using Codecool.LifeOfAnts.Utilities;
@@ -5,8 +7,9 @@ namespace Codecool.LifeOfAnts.Ants
     public abstract class Ant
     {
         protected Direction Direction;
-        protected Position Position;
+        public Position Position;
         protected Colony Colony;
+        protected char _name;
 
         public Ant(Position position, Direction direction, Colony colony)
         {
@@ -15,6 +18,6 @@ namespace Codecool.LifeOfAnts.Ants
             Colony = colony;
         }
 
-        public abstract void Move();
+        public abstract void Move(object sender, EventArgs args);
     }
 }
