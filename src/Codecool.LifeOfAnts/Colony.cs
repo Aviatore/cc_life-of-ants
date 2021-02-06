@@ -1,18 +1,21 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework.Internal.Execution;
+using Codecool.LifeOfAnts.Ants;
+using Codecool.LifeOfAnts.Utilities;
+using System.Collections.Generic;
 
 namespace Codecool.LifeOfAnts
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using Codecool.LifeOfAnts.Ants;
-    using Codecool.LifeOfAnts.Utilities;
+    //using System.ComponentModel.DataAnnotations;
+    //using Codecool.LifeOfAnts.Ants;
 
     /// <summary>
     /// Colony
     /// </summary>
+    [SuppressMessage("ReSharper", "SA1101")]
     public class Colony
     {
         public int Width { get; }
@@ -70,7 +73,37 @@ namespace Codecool.LifeOfAnts
             _arena[position.X, position.Y] = value;
         }
 
+        private List<Ant> GenrateAntsByType<T>(int antQuantity)
+            where T : Ant
+        {
+            List<Ant> ants = new List<Ant>();
+            Position position;
+
+            position = typeof(T) == typeof(Soldier) ? GetValidPosition("soldier") : GetValidPosition();
+
+            for (int i = 0; i < antQuantity; i++)
+            {
+                var parameters = new object[3] {position, Direction.East, this};
+                var ant = Activator.CreateInstance(typeof(T), parameters) as T;
+                ants.Add(ant);
+            }
+
+            return ants;
+        }
+
+        private Direction RandomDirection()
+        {
+            return (Direction)(byte)_random.Next(0, 4);
+        }
+
         public void GenerateAnts(int workersQuantity, int soldiersQuantity, int droneQuantity)
+        {
+            _listOfAnts.AddRange(GenrateAntsByType<Worker>(workersQuantity));
+            _listOfAnts.AddRange(GenrateAntsByType<Soldier>(soldiersQuantity));
+            _listOfAnts.AddRange(GenrateAntsByType<Drone>(droneQuantity));
+        }
+
+        public void GenerateAnts_tmp(int workersQuantity, int soldiersQuantity, int droneQuantity)
         {
             for (int i = 0; i < workersQuantity; i++)
             {
@@ -91,14 +124,6 @@ namespace Codecool.LifeOfAnts
                 _listOfAnts.Add(new Drone(GetValidPosition(), Direction.East, this));
             }
         }
-
-        /*private void AntMaker<AntType>(int antQuantity) where AntType : Ant
-        {
-            for (int i = 0; i < antQuantity; i++)
-            {
-                _listOfAnts.Add(new AntType(GetValidPosition(), Direction.East, this));
-            }
-        }*/
 
         public Position GetValidPosition(string antType=null)
         {
