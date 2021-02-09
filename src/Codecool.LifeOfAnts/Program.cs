@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
-
-namespace Codecool.LifeOfAnts
+﻿namespace Codecool.LifeOfAnts
 {
+    using System;
+    using System.Threading;
+
     /// <summary>
     ///     Simulation main class
     /// </summary>

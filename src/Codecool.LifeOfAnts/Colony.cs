@@ -169,9 +169,9 @@ namespace Codecool.LifeOfAnts
         {
             Console.Clear();
             
-            for (int y = 0; y < (Width + 2); y++)
+            for (int y = 0; y < _arena.GetLength(1); y++)
             {
-                for (int x = 0; x < (Width + 2); x++)
+                for (int x = 0; x < _arena.GetLength(0); x++)
                 {
                     Console.Write(_arena[x, y]);
                 }

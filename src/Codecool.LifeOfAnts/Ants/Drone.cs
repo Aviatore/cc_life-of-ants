@@ -1,23 +1,26 @@
-using System;
-using Codecool.LifeOfAnts.Utilities;
-
 namespace Codecool.LifeOfAnts.Ants
 {
+    using System;
+    using Codecool.LifeOfAnts.Utilities;
+
     public class Drone : Ant
     {
         public Guid DroneId { get; } 
+        
         public Drone(Position position, Direction direction, Colony colony)
             : base(position, direction, colony)
         {
-            DroneId = Guid.NewGuid();
-            colony.OnMove += Move;
             _name = 'D';
+            
+            DroneId = Guid.NewGuid();
+            
+            colony.OnMove += Move;
         }
 
         public override void Move(object sender, EventArgs args)
         {
-            int diffX = Colony.QueenAnt.Position.X - Position.X;
-            int diffY = Colony.QueenAnt.Position.Y - Position.Y;
+            int diffX = _colony.QueenAnt.Position.X - Position.X;
+            int diffY = _colony.QueenAnt.Position.Y - Position.Y;
 
             if (Math.Abs(diffX) > 1 || Math.Abs(diffY) > 1)
             {
@@ -32,15 +35,15 @@ namespace Codecool.LifeOfAnts.Ants
                     position = new Position(Position.X, Position.Y + (diffY / Math.Abs(diffY)));
                 }
                 
-                Colony.ArenaModifyPosition(this.Position, ' ');
+                _colony.ArenaModifyPosition(this.Position, ' ');
                 this.Position = position;
-                Colony.ArenaModifyPosition(this.Position, _name);
+                _colony.ArenaModifyPosition(this.Position, _name);
             }
             else
             {
-                Colony.ArenaModifyPosition(this.Position, ' ');
-                Colony.QueenAnt.TryMate(this);
-                Colony.ArenaModifyPosition(this.Position, _name);
+                _colony.ArenaModifyPosition(this.Position, ' ');
+                _colony.QueenAnt.TryMate(this);
+                _colony.ArenaModifyPosition(this.Position, _name);
             }
         }
     }

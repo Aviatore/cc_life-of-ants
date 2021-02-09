@@ -1,8 +1,8 @@
-using System;
-using Codecool.LifeOfAnts.Utilities;
-
 namespace Codecool.LifeOfAnts.Ants
 {
+    using System;
+    using Codecool.LifeOfAnts.Utilities;
+
     public class Worker : Ant
     {
         private Random _random; 
@@ -10,9 +10,9 @@ namespace Codecool.LifeOfAnts.Ants
             : base(position, direction, colony)
         {
             _random = new Random();
+            _name = 'W';
             
             colony.OnMove += Move;
-            _name = 'W';
         }
 
         public override void Move(object sender, EventArgs args)
@@ -24,8 +24,7 @@ namespace Codecool.LifeOfAnts.Ants
             
             while (loop)
             {
-                byte randomDirection = (byte) _random.Next(0, 4);
-                Direction direction = (Direction) randomDirection;
+                Direction direction = (Direction)(byte)_random.Next(0, 4);
 
                 switch (direction)
                 {
@@ -48,11 +47,11 @@ namespace Codecool.LifeOfAnts.Ants
                 }
                 
                 Utilities.Position position = new Position(x, y);
-                if (Colony.IsValidPosition(position))
+                if (_colony.IsValidPosition(position))
                 {
-                    Colony.ArenaModifyPosition(this.Position, ' ');
+                    _colony.ArenaModifyPosition(this.Position, ' ');
                     this.Position = position;
-                    Colony.ArenaModifyPosition(this.Position, _name);
+                    _colony.ArenaModifyPosition(this.Position, _name);
                     
                     loop = false;
                 }
